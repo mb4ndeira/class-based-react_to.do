@@ -9,7 +9,7 @@ interface ITask {
   isComplete: boolean;
 }
 
-export default class TasksList extends Component<any,{tasks: ITask[]}> {
+export default class TasksList extends Component<any, {tasks: ITask[]}> {
   taskAddingInputRef: React.RefObject<HTMLInputElement>;
 
   constructor(props: any) {
@@ -43,7 +43,7 @@ export default class TasksList extends Component<any,{tasks: ITask[]}> {
       return Number(generatedID)
     }
 
-    this.setState({...this.state, tasks:[...this.state.tasks, {
+    this.setState({ tasks:[...this.state.tasks, {
       ID: generateTaskID(),
       title,
       isComplete: false
@@ -51,13 +51,13 @@ export default class TasksList extends Component<any,{tasks: ITask[]}> {
   }
 
   handleToggleTaskCompletion = (ID: number) => {
-    this.setState({...this.state, tasks: this.state.tasks.map(task=> task.ID === ID ? ({
+    this.setState({ tasks: this.state.tasks.map(task=> task.ID === ID ? ({
       ...task, isComplete: !task.isComplete
     }) : task)})
   }
 
   handleRemoveTask = (ID: number) => {
-    this.setState({...this.state, tasks: this.state.tasks.filter(task => task.ID !== ID)})
+    this.setState({ tasks: this.state.tasks.filter(task => task.ID !== ID)})
   }
 
   render = ()=> (
