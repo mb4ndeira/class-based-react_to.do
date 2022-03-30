@@ -3,7 +3,21 @@ import { FiTrash, FiCheckSquare } from 'react-icons/fi'
 
 import './styles.scss'
 
-export default class TasksList extends Component {
+interface ITask {
+  id: number;
+  title: string;
+  isComplete: boolean;
+}
+
+export default class TasksList extends Component<any,{tasks: ITask[]}> {
+  constructor(props: any) {
+    super(props)
+
+    this.state = {
+      tasks: []
+    }
+  }
+
   render = ()=> (
     <section className="tasks-list">
       <header>
@@ -23,23 +37,25 @@ export default class TasksList extends Component {
 
       <main>
         <ul>
-            <li key="1">
-              <div className="" >
+        {this.state.tasks.map(task => (
+            <li key={task.id}>
+              <div className={task.isComplete ? 'completed' : ''}>
                 <label className="checkbox-container">
                   <input
                     type="checkbox"
                     readOnly
-                    checked={false}
+                    checked={task.isComplete}
                   />
                   <span className="checkmark"></span>
                 </label>
-                <p>Única tarefa</p>
+                <p>{task.title}</p>
               </div>
 
               <button type="button">
                 <FiTrash size={16} />
               </button>
             </li>
+          ))}
         </ul>
       </main>
     </section>
