@@ -50,6 +50,12 @@ export default class TasksList extends Component<any,{tasks: ITask[]}> {
     }]})
   }
 
+  handleToggleTaskCompletion = (ID: number) => {
+    this.setState({...this.state, tasks: this.state.tasks.map(task=> task.ID === ID ? ({
+      ...task, isComplete: !task.isComplete
+    }) : task)})
+  }
+
   render = ()=> (
     <section className="tasks-list">
       <header>
@@ -77,6 +83,7 @@ export default class TasksList extends Component<any,{tasks: ITask[]}> {
                     type="checkbox"
                     readOnly
                     checked={task.isComplete}
+                    onClick={()=> this.handleToggleTaskCompletion(task.ID)}
                   />
                   <span className="checkmark"></span>
                 </label>
