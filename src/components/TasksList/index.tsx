@@ -56,6 +56,10 @@ export default class TasksList extends Component<any,{tasks: ITask[]}> {
     }) : task)})
   }
 
+  handleRemoveTask = (ID: number) => {
+    this.setState({...this.state, tasks: this.state.tasks.filter(task => task.ID !== ID)})
+  }
+
   render = ()=> (
     <section className="tasks-list">
       <header>
@@ -90,7 +94,7 @@ export default class TasksList extends Component<any,{tasks: ITask[]}> {
                 <p>{task.title}</p>
               </div>
 
-              <button type="button">
+              <button type="button" onClick={() => this.handleRemoveTask(task.ID)}>
                 <FiTrash size={16} />
               </button>
             </li>
