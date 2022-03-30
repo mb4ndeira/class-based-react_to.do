@@ -4,18 +4,50 @@ import { FiTrash, FiCheckSquare } from 'react-icons/fi'
 import './styles.scss'
 
 interface ITask {
-  id: number;
+  ID: number;
   title: string;
   isComplete: boolean;
 }
 
 export default class TasksList extends Component<any,{tasks: ITask[]}> {
+  taskAddingInputRef: React.RefObject<HTMLInputElement>;
+
   constructor(props: any) {
     super(props)
+
+    this.taskAddingInputRef = React.createRef()
 
     this.state = {
       tasks: []
     }
+  }
+
+  generateRandomID = (): number => {
+    let ID = ''
+    
+    for (let i = 0; i < 5; i++) {
+      ID += Math.floor(Math.random() * (9 - 1 + 1)) + 1
+    }
+
+    return Number(ID)
+  }
+
+  handleAddTask = (title: string) => {
+    if (!title) return
+
+    const generateTaskID = (): number => {
+      const generatedID = this.generateRandomID()
+
+      if(this.state.tasks.find(task=> task.ID === generatedID)) return generateTaskID()
+
+      return Number(generatedID)
+    }
+
+    this.setState({...this.state, tasks:[...this.state.tasks, {
+      ID: generateTaskID(),
+      title,
+      isComplete: false
+    }]})
   }
 
   render = ()=> (
@@ -27,9 +59,9 @@ export default class TasksList extends Component<any,{tasks: ITask[]}> {
           <input
             type="text"
             placeholder="Adicionar novo todo"
-            value=""
+            ref={this.taskAddingInputRef}
           />
-          <button type="submit">
+          <button type="submit" onClick={()=> this.handleAddTask(this.taskAddingInputRef.current?.value || '')}>
             <FiCheckSquare size={16} color="#fff" />
           </button>
         </div>
@@ -38,7 +70,7 @@ export default class TasksList extends Component<any,{tasks: ITask[]}> {
       <main>
         <ul>
         {this.state.tasks.map(task => (
-            <li key={task.id}>
+            <li key={task.ID}>
               <div className={task.isComplete ? 'completed' : ''}>
                 <label className="checkbox-container">
                   <input
